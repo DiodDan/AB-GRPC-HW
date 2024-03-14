@@ -1,17 +1,19 @@
 FROM python:3.12.2-slim-bullseye
-
-RUN mkdir service/src
-RUN mkdir service/tests
-COPY ../src service/src
-COPY ../tests service/tests
-COPY ../pyproject.toml service
-COPY ../poetry.lock service
-COPY ../Makefile service
-COPY ../.pylintrc service
+RUN mkdir service
 WORKDIR service
+RUN mkdir src
+RUN mkdir tests
+COPY ../src src
+COPY ../tests tests
+COPY ../pyproject.toml .
+COPY ../poetry.lock .
+COPY ../Makefile .
+COPY ../.pylintrc .
 RUN pip install poetry
-RUN poetry install
-RUN make protogen
+RUN apt update && apt install -y make
+RUN make install
 
-EXPOSE 50051
-ENTRYPOINT [ "python", "recommendations.py" ]
+RUN pip list
+RUN ls
+RUN poetry show --tree
+RUN poetry run make protogen

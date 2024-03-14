@@ -8,7 +8,7 @@ install:
 	poetry install --no-root
 
 test:
-	poetry run pytest
+	poetry run pytest tests
 
 format:
 	black $(TEST_FOLDERS)
@@ -25,5 +25,8 @@ lint:
 	pylint $(CODE_FOLDERS) $(TEST_FOLDERS)
 
 protogen:
-	python -m grpc_tools.protoc -I $(PROTO_FOLDER) --python_out=$(CODE_FOLDERS)/greeting --grpc_python_out=$(CODE_FOLDERS)/greeting $(PROTO_FOLDER)/service.proto
+	poetry run python -m grpc_tools.protoc -I $(PROTO_FOLDER) --python_out=$(CODE_FOLDERS)/greeting --grpc_python_out=$(CODE_FOLDERS)/greeting $(PROTO_FOLDER)/service.proto
 	black $(CODE_FOLDERS)
+
+test_on_docker:
+	docker-compose up test
