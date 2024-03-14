@@ -1,6 +1,7 @@
 import pytest
-from src.greeting.service_pb2 import AddRequest, GreetingRequest, Language
+
 from src.greeting.client import GreetingClient, LanguageEnum
+from src.greeting.service_pb2 import AddRequest, GreetingRequest, Language
 
 
 def test_greeting() -> None:
@@ -12,7 +13,6 @@ def test_greeting() -> None:
     response2 = GreetingClient.greet(name="Another", language=LanguageEnum.ENGLISH)
     with pytest.raises(ValueError):
         GreetingClient.greet(name="Danila", language=LanguageEnum.ENGLISH)
-
 
     assert response1 == "Hello Name!"
     assert response2 == "Hello Another!"
@@ -26,4 +26,3 @@ def test_add() -> None:
     assert response1 == 3
     assert response2 == 11
     assert response3 == 999
-

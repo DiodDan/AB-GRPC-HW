@@ -2,9 +2,10 @@ import os
 
 import grpc
 import pytest
+from grpc._channel import _InactiveRpcError
+
 from src.greeting.service_pb2 import AddRequest, GreetingRequest, Language
 from src.greeting.service_pb2_grpc import GreetingsStub
-from grpc._channel import _InactiveRpcError
 
 
 @pytest.fixture

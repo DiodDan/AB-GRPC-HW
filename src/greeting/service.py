@@ -1,8 +1,9 @@
 from concurrent import futures
+from datetime import datetime, timezone
 
-from grpc_interceptor import ExceptionToStatusInterceptor, ServerInterceptor
 import grpc
 import service_pb2_grpc
+from grpc_interceptor import ExceptionToStatusInterceptor, ServerInterceptor
 from service_pb2 import (
     AddRequest,
     AddResponse,
@@ -10,7 +11,6 @@ from service_pb2 import (
     GreetingResponse,
     Language,
 )
-from datetime import datetime, timezone
 
 
 class ErrorLogger(ServerInterceptor):

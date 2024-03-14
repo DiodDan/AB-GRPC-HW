@@ -1,13 +1,14 @@
 import os
+from datetime import datetime, timezone
 from enum import Enum
-from typing import Callable, Any
+from typing import Any, Callable
 
 import grpc
-from src.greeting.service_pb2 import AddRequest, GreetingRequest, Language
-from src.greeting.service_pb2_grpc import GreetingsStub
 from grpc._channel import _InactiveRpcError
 from grpc_interceptor import ClientInterceptor
-from datetime import datetime, timezone
+
+from src.greeting.service_pb2 import AddRequest, GreetingRequest, Language
+from src.greeting.service_pb2_grpc import GreetingsStub
 
 
 class ErrorLogger(ClientInterceptor):
