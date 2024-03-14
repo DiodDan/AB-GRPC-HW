@@ -19,4 +19,4 @@ RUN poetry show --tree
 RUN poetry run make protogen
 
 EXPOSE 5000
-ENTRYPOINT [ "poetry", "run", "python", "src/greeting/client.py" ]
+ENTRYPOINT [ "poetry", "run", "python", "src/greeting/service.py" ]

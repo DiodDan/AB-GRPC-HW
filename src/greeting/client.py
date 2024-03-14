@@ -37,7 +37,7 @@ class LanguageEnum(Enum):
 def generate_default_client() -> GreetingsStub:
     interceptors = [ErrorLogger()]
     recommendations_host = os.getenv("SERVICE_HOST", "localhost")
-    channel = grpc.insecure_channel(f"{recommendations_host}:5000")
+    channel = grpc.insecure_channel(f"{recommendations_host}:51744")
     channel = grpc.intercept_channel(channel, *interceptors)
     client = GreetingsStub(
         channel,

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-deployment
+  labels:
+    run: greeting-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: greeting-server
+  template:
+    metadata:
+      labels:
+        run: greeting-server
+      name: greeting-server
+    spec:
+      containers:
+        - name: greeting-server
+          image: dioddan/greeting_server
+          ports:
+            - containerPort: 5000
