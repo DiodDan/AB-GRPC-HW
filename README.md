@@ -16,6 +16,7 @@
 ## III. [Заключение][conclusions]
 
 ## [ДЗ][homework]
+## [Доки к дз][docs_for_hw]
 
 ---
 
@@ -34,3 +35,5 @@
 [conclusions]: assets/materials/conclusions.md "conclusions"
 
 [homework]: assets/materials/homework.md "homework"
+
+[docs_for_hw]: assets/materials/docs_for_hw.md ""

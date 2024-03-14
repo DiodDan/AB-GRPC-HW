@@ -2,20 +2,29 @@
 requires = ["setuptools>=68.1"]
 build-backend = "setuptools.build_meta"
 
-[project]
-name = "homework_10"
+[tool.poetry]
+name = "jobwebscrapper"
 version = "0.0.1"
-authors = [
-  { name="Dmitry Kosarevsky", email="if@kosarevsky.ru" },
-]
-description = "A Tinkoff Python AB hw-10 package"
+description = "this is tool for scrapping information about jobs from different websits"
+authors = ["danila12315454 <danilaprig@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[tool.poetry.dependencies]
+python = ">=3.12,<3.13"
+grpcio-tools = "^1.62.1"
+grpcio = "^1.62.1"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.2.0"
+flake8 = "^7.0.0"
+pylint = "^3.1.0"
+pytest = "^8.1.1"
 
 [project.urls]
 "Homepage" = "https://github.com/central-university-dev/python-hw-10-template"
