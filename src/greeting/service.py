@@ -9,6 +9,8 @@ from service_pb2 import (AddRequest, AddResponse, GreetingRequest,
 
 class GreetingsServicer(service_pb2_grpc.GreetingsServicer):
     def Greet(self, request: GreetingRequest, context) -> GreetingResponse:
+        if request.name == "Danila":
+            context.abort(grpc.StatusCode.INVALID_ARGUMENT, "I am not allowed to say hello to Danila")
         if request.language == Language.RUSSIAN:
             return GreetingResponse(greeting=f"Привет {request.name}!")
         if request.language == Language.ENGLISH:
