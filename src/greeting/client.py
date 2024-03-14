@@ -1,10 +1,28 @@
 from enum import Enum
+from typing import Callable, Any
 
 import grpc
 from service_pb2 import AddRequest, GreetingRequest, Language
 from service_pb2_grpc import GreetingsStub
 from grpc._channel import _InactiveRpcError
+from grpc_interceptor import ClientInterceptor
+from datetime import datetime, timezone
 
+
+class ErrorLogger(ClientInterceptor):
+    def intercept(
+            self,
+            method: Callable,
+            request_or_iterator: Any,
+            call_details: grpc.ClientCallDetails,
+    ):
+        try:
+            return method(request_or_iterator, call_details)
+        except Exception:
+            print(f"""
+time: {datetime.now(timezone.utc)}
+payload: {str(request_or_iterator).rstrip("\n")}
+call_details: {call_details}""")
 
 class LanguageEnum(Enum):
     RUSSIAN = "RUSSIAN"
@@ -12,8 +30,10 @@ class LanguageEnum(Enum):
 
 
 def generate_default_client() -> GreetingsStub:
+    interceptors = [ErrorLogger()]
     channel = grpc.insecure_channel("localhost:50051")
-    client = GreetingsStub(channel)
+    channel = grpc.intercept_channel(channel, *interceptors)
+    client = GreetingsStub(channel, )
     return client
 
 
@@ -38,9 +58,8 @@ class GreetingClient:
 
 def main() -> None:
     print(GreetingClient.add(a=5, b=3))
-    print(GreetingClient.greet(name="Danila", language=LanguageEnum.ENGLISH))
+    print(GreetingClient.greet(name="Dfg", language=LanguageEnum.ENGLISH))
     print(GreetingClient.greet(name="Semen", language=LanguageEnum.ENGLISH))
-
 
 
 if __name__ == "__main__":

@@ -1,10 +1,26 @@
-import random
 from concurrent import futures
 
+from grpc_interceptor import ExceptionToStatusInterceptor, ServerInterceptor
 import grpc
 import service_pb2_grpc
 from service_pb2 import (AddRequest, AddResponse, GreetingRequest,
                          GreetingResponse, Language)
+from datetime import datetime, timezone
+
+class ErrorLogger(ServerInterceptor):
+    def intercept(self, method, request, context, method_name):
+        try:
+            return method(request, context)
+        except Exception as e:
+            self.log_error(e, request, context)
+            raise
+
+    def log_error(self, e: Exception, request, context) -> None:
+
+        print(f"""
+time: {datetime.now(timezone.utc)}
+payload: {str(request).rstrip("\n")}
+status: {context.code()}""")
 
 
 class GreetingsServicer(service_pb2_grpc.GreetingsServicer):
@@ -21,7 +37,8 @@ class GreetingsServicer(service_pb2_grpc.GreetingsServicer):
 
 
 def serve() -> None:
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    interceptors = [ExceptionToStatusInterceptor(), ErrorLogger()]
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), interceptors=interceptors)
     service_pb2_grpc.add_GreetingsServicer_to_server(GreetingsServicer(), server)
     server.add_insecure_port("[::]:50051")
     server.start()
