@@ -39,9 +39,6 @@ jobs:
       - name: Build docker image
         run: docker build . -t tink-ab-hw8 -f ./docker/test/Dockerfile
 
-      - name: Run tests
-        run: docker run -t tink-ab-hw8 make test
-
   tests:
     runs-on: ubuntu-latest
 
