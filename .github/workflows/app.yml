@@ -37,10 +37,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build docker image
-        run: docker build -t tink-ab-hw8 .
+        run: docker build . -t tink-ab-hw8 -f ./docker/test/Dockerfile
 
       - name: Run tests
-        run: docker run -t tink-ab-hw8 pytest
+        run: docker run -t tink-ab-hw8 poetry run pytest
 
   tests:
     runs-on: ubuntu-latest
