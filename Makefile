@@ -1,5 +1,6 @@
 CODE_FOLDERS := src
 TEST_FOLDERS := tests
+PROTO_FOLDER := ./$(CODE_FOLDERS)/protobufs
 
 .PHONY: test lint format
 
@@ -22,3 +23,7 @@ lint:
 	isort --check $(CODE_FOLDERS)
 	flake8 $(CODE_FOLDERS) $(TEST_FOLDERS)
 	pylint $(CODE_FOLDERS) $(TEST_FOLDERS)
+
+protogen:
+	python -m grpc_tools.protoc -I $(PROTO_FOLDER) --python_out=$(CODE_FOLDERS)/greeting --grpc_python_out=$(CODE_FOLDERS)/greeting $(PROTO_FOLDER)/service.proto
+	black $(CODE_FOLDERS)
