@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+
+enum Language {
+    ENGLISH = 0;
+    RUSSIAN = 1;
+}
+
+message GreetingRequest {
+  string name = 1;
+  Language language = 2;
+}
+
+
+message GreetingResponse {
+  string greeting = 1;
+}
+
+message AddRequest {
+  int64 a = 1;
+  int64 b = 2;
+}
+
+
+message AddResponse {
+  int64 answer = 1;
+}
+
+
+service Greetings {
+  rpc Greet (GreetingRequest) returns (GreetingResponse);
+  rpc Add (AddRequest) returns (AddResponse);
+}

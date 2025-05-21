@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  service:
+    container_name: service
+    command: poetry run python src/greeting/service.py
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    networks:
+      - microservices
+    ports:
+      - "5000:5000"
+
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: poetry run python src/greeting/client.py
+    environment:
+      SERVICE_HOST: service
+    networks:
+      - microservices
+    depends_on:
+      - service
+
+  test:
+    container_name: test
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: poetry run make test
+    environment:
+      SERVICE_HOST: service
+      PYTHONPATH: /src
+    networks:
+      - microservices
+    depends_on:
+      - service
+
+networks:
+  microservices:

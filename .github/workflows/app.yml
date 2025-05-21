@@ -6,6 +6,29 @@ permissions:
   contents: read
 
 jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.12" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Poetry
+        run: |
+          pip install poetry
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create false
+      - name: Install dependencies
+        run: |
+          make install
+      - name: Style checking
+        run: |
+          make lint
   build:
     runs-on: ubuntu-latest
 
@@ -14,7 +37,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build docker image
-        run: docker build -t tink-ab-hw8 .
+        run: docker build . -t tink-ab-hw8 -f ./docker/test/Dockerfile
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Run tests
-        run: docker run -t tink-ab-hw8 pytest
+        run: make test_on_docker

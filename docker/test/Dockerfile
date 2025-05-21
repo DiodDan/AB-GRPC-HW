@@ -17,3 +17,6 @@ RUN pip list
 RUN ls
 RUN poetry show --tree
 RUN poetry run make protogen
+
+EXPOSE 5000
+ENTRYPOINT [ "poetry", "run", "python", "src/greeting/service.py" ]
